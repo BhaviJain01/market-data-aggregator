@@ -4,6 +4,7 @@
 #include <optional>
 #include <cstddef>
 #include <cassert>
+#include <memory>
 
 namespace mda {
 
@@ -18,7 +19,10 @@ class LockFreeQueue {
                   "Capacity must be a power of 2");
 
 public:
-    LockFreeQueue() : head_(0), tail_(0) {}
+    LockFreeQueue()
+    : head_(0),
+      tail_(0),
+      buffer_(std::make_unique<T[]>(Capacity)) {}
 
     // Producer side — returns false if queue is full
     bool push(const T& item) noexcept {
@@ -69,7 +73,7 @@ private:
 
     alignas(64) std::atomic<std::size_t> head_;
     alignas(64) std::atomic<std::size_t> tail_;
-    std::array<T, Capacity> buffer_;
+    std::unique_ptr<T[]> buffer_;
 };
 
 } // namespace mda
