@@ -14,7 +14,7 @@ struct alignas(64) Tick {
     double   last;
     uint64_t volume;
     uint32_t crc32;
-    char     symbol[12];
+    char     symbol[8];
     char     feed_id[4];
 
     bool is_valid() const noexcept;

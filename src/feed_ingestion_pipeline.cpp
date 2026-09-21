@@ -27,6 +27,7 @@ FeedIngestionPipeline::~FeedIngestionPipeline() {
 
 void FeedIngestionPipeline::start() {
     if (running_.exchange(true)) return;
+
     metrics_.state.store(FeedState::CONNECTING);
     producer_thread_ = std::thread([this]{ producer_loop(); });
     consumer_thread_ = std::thread([this]{ consumer_loop(); });
@@ -59,8 +60,8 @@ void FeedIngestionPipeline::producer_loop() {
         tick.ask  = tick.bid + 0.01;
         tick.last = tick.bid + 0.005;
         tick.volume = rng() % 10000 + 1;
-        std::strncpy(tick.symbol, "AAPL", sizeof(tick.symbol));
-        std::strncpy(tick.feed_id, feed_id_.c_str(), sizeof(tick.feed_id));
+        std::strncpy(tick.symbol, "AAPL", sizeof(tick.symbol) - 1);
+        std::strncpy(tick.feed_id, feed_id_.c_str(), sizeof(tick.feed_id) - 1);
         tick.compute_crc();
 
         // Simulate ~0.1% CRC corruption
