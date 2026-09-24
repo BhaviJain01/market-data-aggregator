@@ -34,7 +34,7 @@ TEST(CRC32Test, KnownVector) {
 }
 
 TEST(CRC32Test, EmptyInput) {
-    EXPECT_NE(crc::compute(nullptr, 0), 0u); // implementation-defined but consistent
+    EXPECT_EQ(crc::compute(nullptr, 0), 0u);
 }
 
 TEST(CRC32Test, SingleByteDifference) {
