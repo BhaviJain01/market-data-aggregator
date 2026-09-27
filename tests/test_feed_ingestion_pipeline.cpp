@@ -127,6 +127,11 @@ TEST(FeedIngestionPipelineTest, StateTransitionsToDroppedAfterStop) {
         [](const Tick&){});
 
     pipe.start();
+
+for (int i = 0; i < 100 && pipe.state() != FeedState::ACTIVE; ++i) {
+    std::this_thread::sleep_for(1ms);
+}
+
     EXPECT_EQ(pipe.state(), FeedState::ACTIVE);
     std::this_thread::sleep_for(20ms);
     pipe.stop();
