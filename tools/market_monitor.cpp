@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include <stdexcept>
+#include <random>
 
 // POSIX
 #include <sys/socket.h>
